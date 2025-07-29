@@ -10,7 +10,7 @@ class Project(models.Model):
         (2, 'Completed'),
     ]
 
-    members = models.ManyToManyField(settings.AUTH_USER_MODEL)
+    members = models.ManyToManyField(settings.AUTH_USER_MODEL , through='ProjectMember')
     name = models.CharField(max_length=100)
     max_members = models.PositiveIntegerField()
     status = models.IntegerField(choices=STATUS_CHOICES, default=0)
