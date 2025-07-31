@@ -7,7 +7,7 @@ from django.utils import timezone
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password ,  **extra_fields):
+    def create_user(self, email, password, **extra_fields):
         """
         Create and save a user with the given email, and password.
         """
@@ -16,8 +16,8 @@ class UserManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
-    
-    def create_superuser(self, email , password, **extra_fields):
+
+    def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
 
@@ -27,6 +27,7 @@ class UserManager(BaseUserManager):
             raise ValueError("Superuser must have is_superuser=True.")
 
         return self.create_user(email, password, **extra_fields)
+
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     """
@@ -41,12 +42,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     - last_name (max_length=150)
     """
 
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=150, blank=True)
+    FIRST_NAME_MAX_LENGTH = 30
+    LAST_NAME_MAX_LENGTH = 30
+
+    first_name = models.CharField(max_length=FIRST_NAME_MAX_LENGTH)
+    last_name = models.CharField(max_length=LAST_NAME_MAX_LENGTH, blank=True)
     email = models.EmailField(unique=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    date_joined = models.DateTimeField(default=timezone.now , null=True)
+    date_joined = models.DateTimeField(default=timezone.now, null=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name"]
