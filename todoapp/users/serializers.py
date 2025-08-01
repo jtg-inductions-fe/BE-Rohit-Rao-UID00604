@@ -30,16 +30,9 @@ class UserTodosStatsSerializer(CustomUserSerializer):
     completed_count = serializers.IntegerField()
     pending_count = serializers.IntegerField()
 
-    class Meta:
+    class Meta(CustomUserSerializer.Meta):
         model = CustomUser
-        fields = [
-            "id",
-            "first_name",
-            "last_name",
-            "email",
-            "completed_count",
-            "pending_count",
-        ]
+        fields = CustomUserSerializer.Meta.fields + ["completed_count", "pending_count"]
 
 
 class UserProjectStatsSerializer(serializers.ModelSerializer):

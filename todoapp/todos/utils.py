@@ -1,13 +1,19 @@
 import json
-from users.models import CustomUser
-from users.serializers import CustomUserSerializer, UserTodosStatsSerializer
-from todos.models import Todo
-from todos.serializers import TodoWithUserSerializer
+
+from django.contrib.auth import get_user_model
+from django.contrib.postgres.aggregates import ArrayAgg
 from django.db.models import Count, Q, Prefetch
+
 from projects.models import Project
 from projects.serializers import ProjectReportSerializer
-from users.serializers import UserProjectStatsSerializer
-from django.contrib.postgres.aggregates import ArrayAgg
+from users.models import CustomUser
+from todos.models import Todo
+from todos.serializers import TodoWithUserSerializer
+from users.serializers import (
+    CustomUserSerializer,
+    UserTodosStatsSerializer,
+    UserProjectStatsSerializer,
+)
 
 # Add code to this util to return all users list in specified format.
 # [ {
@@ -31,7 +37,7 @@ def fetch_all_users():
     Util to fetch given user's tod list
     :return: list of dicts - List of users data
     """
-    users = CustomUser.objects.only("id", "first_name", "last_name", "email")
+    users = get_user_model().objects.only("id", "first_name", "last_name", "email")
     serializer = CustomUserSerializer(users, many=True)
 
     return json.loads(json.dumps(serializer.data))
@@ -354,7 +360,6 @@ def fetch_user_wise_project_status():
             "project__name", filter=Q(project__status=2), distinct=True
         ),
     ).values(
-        "id",
         "first_name",
         "last_name",
         "email",

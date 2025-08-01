@@ -1573,7 +1573,7 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             1,
             msg='Expected only 1 db hit got {}'.format(new_db_hit_count - db_hit_count)
         )
-        self.assertCountEqual(
+        self.assertEqual(
             data,
             expected_data
         )

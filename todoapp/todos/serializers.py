@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+
 from users.serializers import CustomUserSerializer
 from todos.models import Todo
 

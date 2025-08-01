@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     "users",
     "todos",
     "projects",
-    "django_nose",
 ]
 AUTH_USER_MODEL = "users.CustomUser"
 
