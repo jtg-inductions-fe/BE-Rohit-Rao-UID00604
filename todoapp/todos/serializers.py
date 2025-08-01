@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from users.serializers import CustomUserSerializer
-from todos.models import Todo
+from todos import models as todos_models
 
 
 class TodoWithUserSerializer(serializers.ModelSerializer):
@@ -11,7 +11,7 @@ class TodoWithUserSerializer(serializers.ModelSerializer):
     created_at = serializers.SerializerMethodField()
 
     class Meta:
-        model = Todo
+        model = todos_models.Todo
         fields = ["id", "name", "status", "created_at", "creator"]
 
     def get_status(self, obj):

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from projects.models import Project
+from projects import models as projects_models
 from users.serializers import UserTodosStatsSerializer
 
 
@@ -9,5 +9,5 @@ class ProjectReportSerializer(serializers.Serializer):
     project_title = serializers.CharField(source="name")
 
     class Meta:
-        model = Project
+        model = projects_models.Project
         fields = ["project_title", "report"]

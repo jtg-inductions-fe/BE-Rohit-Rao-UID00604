@@ -1,11 +1,9 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
-from django.contrib.auth.hashers import make_password
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
-from users.models import CustomUser
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -22,7 +20,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
                 self.fields.pop(field_name)
 
     class Meta:
-        model = CustomUser
+        model = get_user_model()
         fields = ["id", "first_name", "last_name", "email"]
 
 
@@ -31,7 +29,7 @@ class UserTodosStatsSerializer(CustomUserSerializer):
     pending_count = serializers.IntegerField()
 
     class Meta(CustomUserSerializer.Meta):
-        model = CustomUser
+        model = get_user_model()
         fields = CustomUserSerializer.Meta.fields + ["completed_count", "pending_count"]
 
 
@@ -41,7 +39,7 @@ class UserProjectStatsSerializer(serializers.ModelSerializer):
     completed_projects = serializers.ListField(child=serializers.CharField())
 
     class Meta:
-        model = CustomUser
+        model = get_user_model()
         fields = [
             "first_name",
             "last_name",
