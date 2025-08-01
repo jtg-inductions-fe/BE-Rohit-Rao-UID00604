@@ -2,7 +2,7 @@ from django.urls import include, path
 from django.contrib import admin
 
 api_urls = [
-    path('todos/', include('todos.urls')),
+    path('', include('todos.urls')),
     path('', include('users.urls')),
 ]
 

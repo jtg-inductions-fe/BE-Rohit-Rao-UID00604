@@ -19,3 +19,18 @@ class TodoWithUserSerializer(serializers.ModelSerializer):
 
     def get_created_at(self, obj):
         return obj.date_created.strftime("%I:%M %p, %d %b, %Y")
+
+
+class TodoListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Todo
+        fields = ["name", "done", "date_created"]
+
+
+class TodoSerializer(serializers.ModelSerializer):
+    todo_id = serializers.IntegerField(source="id", required=False)
+    todo = serializers.CharField(source="name", required=False)
+
+    class Meta:
+        model = Todo
+        fields = ["todo_id", "todo", "done"]
