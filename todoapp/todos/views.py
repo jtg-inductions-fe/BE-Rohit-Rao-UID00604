@@ -1,12 +1,12 @@
-from rest_framework.viewsets import ModelViewSet
-from todos.models import Todo
-from todos.serializers import TodoListSerializer, TodoSerializer
 from rest_framework.permissions import AllowAny
+from rest_framework.viewsets import ModelViewSet
+
+from todos import serializers as todos_serializers, models as todos_models
 
 
 class TodoAPIViewSet(ModelViewSet):
-    queryset = Todo.objects.all()
-    serializer_class = TodoSerializer
+    queryset = todos_models.Todo.objects.all()
+    serializer_class = todos_serializers.TodoSerializer
 
     """
         success response for create/update/get
@@ -28,10 +28,18 @@ class TodoAPIViewSet(ModelViewSet):
     permission_classes = [AllowAny]
 
     def get_serializer_class(self):
-        if self.action == "list":
-            self.serializer_class = TodoListSerializer
-
         print(self.action)
+        if self.action == "create":
+            self.serializer_class = todos_serializers.TodoCreateSerializer
+
         return super().get_serializer_class()
 
-  
+    def get_queryset(self):
+        if self.action == "list":
+            user_id = self.request.GET["user_id"]
+            if user_id:
+                return todos_models.Todo.objects.filter(user_id=user_id).order_by(
+                    "-date_created"
+                )
+            return todos_models.Todo.objects.none()
+        return super().get_queryset()
