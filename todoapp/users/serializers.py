@@ -75,6 +75,7 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+
 class UserRegistrationSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only=True)
 
