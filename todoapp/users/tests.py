@@ -20,6 +20,7 @@ class UserRegistrationAPIViewTestCase(APITestCase):
             "confirm_password": "INVALID_PASSWORD",
         }
         response = self.client.post(self.url, user_data)
+        print(response.content)
         self.assertEqual(400, response.status_code)
 
     def test_user_registration(self):
