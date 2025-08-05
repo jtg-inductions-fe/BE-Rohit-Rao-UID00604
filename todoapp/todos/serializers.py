@@ -34,7 +34,7 @@ class TodoSerializer(serializers.ModelSerializer):
 
 class TodoCreateSerializer(serializers.ModelSerializer):
     user_id = serializers.PrimaryKeyRelatedField(
-        source="user", queryset=get_user_model().objects.all(), write_only=True
+        source="user", queryset=get_user_model().objects.all()
     )
     todo = serializers.CharField(source="name")
 

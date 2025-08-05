@@ -28,7 +28,6 @@ class TodoAPIViewSet(ModelViewSet):
     permission_classes = [AllowAny]
 
     def get_serializer_class(self):
-        print(self.action)
         if self.action == "create":
             self.serializer_class = todos_serializers.TodoCreateSerializer
 
