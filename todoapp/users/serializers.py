@@ -84,6 +84,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         fields = ["first_name", "last_name", "email", "password", "date_joined"]
         extra_kwargs = {
             "password": {"write_only": True},
+            "first_name": {"required": False, "allow_blank": True},
         }
 
     def to_representation(self, instance):
