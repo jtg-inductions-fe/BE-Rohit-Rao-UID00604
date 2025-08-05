@@ -81,5 +81,10 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         fields = ["first_name", "last_name", "email", "password", "date_joined"]
         extra_kwargs = {
             "password": {"write_only": True},
-            "date_joined": {"read_only": True},
         }
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        token, _ = Token.objects.get_or_create(user=instance)
+        data["token"] = token.key
+        return data
