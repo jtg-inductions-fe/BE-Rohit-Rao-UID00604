@@ -79,8 +79,8 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
-    confirm_password = serializers.CharField()
-
+    confirm_password = serializers.CharField(write_only = True)
+    
     class Meta:
         model = get_user_model()
         fields = [

@@ -7,7 +7,7 @@ from django.utils import timezone
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password, **extra_fields):
+    def create_user(self, email, password , **extra_fields):
         """
         Create and save a user with the given email, and password.
         """
