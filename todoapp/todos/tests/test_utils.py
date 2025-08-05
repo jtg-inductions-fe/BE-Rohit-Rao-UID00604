@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import connection
 from django.test import TestCase
 
-from todoapp.todos import utils as todos_utils
+import todos.utils as todos_utils
 
 
 class TestSetupMixin(object):
@@ -1573,7 +1573,7 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             1,
             msg='Expected only 1 db hit got {}'.format(new_db_hit_count - db_hit_count)
         )
-        self.assertListEqual(
+        self.assertEqual(
             data,
             expected_data
         )
