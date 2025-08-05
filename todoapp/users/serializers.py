@@ -73,6 +73,9 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = "__all__"
+        extra_kwargs = {
+            "first_name": {"required": False, "allow_blank": True},
+        }
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):

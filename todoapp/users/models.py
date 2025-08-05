@@ -56,6 +56,25 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ["first_name", "last_name"]
 
     objects = UserManager()
-
+    class Meta:
+        verbose_name = "user"
+        verbose_name_plural = "users"
+        
     def __str__(self):
         return self.email
+    
+    @classmethod
+    def from_db(cls, db, field_names, values):
+        instance = super().from_db(db, field_names, values)
+        instance._password = instance.password
+        return instance
+    
+    def save(self, *args, **kwargs):
+        curr_val = self.password
+        org_val = self._password
+        
+        if org_val != curr_val:
+            self.set_password(curr_val)
+        
+        return super().save(*args, **kwargs)
+

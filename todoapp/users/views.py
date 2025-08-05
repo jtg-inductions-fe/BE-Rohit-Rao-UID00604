@@ -1,8 +1,8 @@
 from rest_framework import status
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import AllowAny
 
-from django.contrib.auth import get_user_model
 from users import serializers as users_serializers
 
 
@@ -17,7 +17,7 @@ class UserRegistrationAPIView(CreateAPIView):
        "token"
      }
     """
-
+    permission_classes = [AllowAny]
     serializer_class = users_serializers.UserRegistrationSerializer
 
 
@@ -28,5 +28,5 @@ class UserLoginAPIView(ObtainAuthToken):
         auth_token: ""
       }
     """
-
+    permission_classes = [AllowAny]
     serializer_class = users_serializers.CustomUserLoginSerializer
