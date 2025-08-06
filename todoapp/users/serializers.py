@@ -48,3 +48,47 @@ class UserProjectStatsSerializer(serializers.ModelSerializer):
             "in_progress_projects",
             "completed_projects",
         ]
+
+
+class CustomUserLoginSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        email = attrs.get("email")
+        password = attrs.get("password")
+
+        user = authenticate(
+            request=self.context.get("request"),
+            username=email,
+            password=password,
+        )
+
+        if not user:
+            raise serializers.ValidationError("Invalid email or password.")
+
+        attrs["user"] = user
+        return attrs
+
+    class Meta:
+        model = get_user_model()
+        fields = "__all__"
+        extra_kwargs = {
+            "first_name": {"required": False, "allow_blank": True},
+        }
+
+
+class UserRegistrationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ["first_name", "last_name", "email", "password", "date_joined"]
+        extra_kwargs = {
+            "password": {"write_only": True},
+            "first_name": {"required": False, "allow_blank": True},
+        }
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        token, _ = Token.objects.get_or_create(user=instance)
+        data["token"] = token.key
+        return data

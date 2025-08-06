@@ -12,8 +12,7 @@ class UserManager(BaseUserManager):
         Create and save a user with the given email, and password.
         """
         email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
-        user.set_password(password)
+        user = self.model(email=email,password = password, **extra_fields)
         user.save(using=self._db)
         return user
 
@@ -56,6 +55,25 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ["first_name", "last_name"]
 
     objects = UserManager()
-
+    class Meta:
+        verbose_name = "user"
+        verbose_name_plural = "users"
+        
     def __str__(self):
         return self.email
+    
+    @classmethod
+    def from_db(cls, db, field_names, values):
+        instance = super().from_db(db, field_names, values)
+        instance._password = instance.password
+        return instance
+    
+    def save(self, *args, **kwargs):
+        curr_val = self.password
+        org_val = self._password
+        
+        if org_val != curr_val:
+            self.set_password(curr_val)
+        
+        return super().save(*args, **kwargs)
+
