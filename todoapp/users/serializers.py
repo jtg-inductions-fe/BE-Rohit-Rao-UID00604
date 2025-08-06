@@ -75,6 +75,7 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+
 class UserRegistrationSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only=True)
 
@@ -103,9 +104,5 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 {"password": "Password and Confirm Password do not match."}
             )
+        attrs.pop("confirm_password")
         return attrs
-
-    def create(self, validated_data):
-        validated_data.pop("confirm_password")
-        user = get_user_model().objects.create_user(**validated_data)
-        return user
