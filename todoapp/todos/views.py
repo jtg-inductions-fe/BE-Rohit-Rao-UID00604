@@ -26,7 +26,7 @@ class TodoAPIViewSet(ModelViewSet):
 
     def get_serializer_class(self):
         if self.action == "create":
-            self.serializer_class = todos_serializers.TodoCreateSerializer
+            return todos_serializers.TodoCreateSerializer
 
         return todos_serializers.TodoSerializer
 

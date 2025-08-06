@@ -34,10 +34,15 @@ class TodoSerializer(serializers.ModelSerializer):
 
 class TodoCreateSerializer(serializers.ModelSerializer):
     user_id = serializers.PrimaryKeyRelatedField(
-        source="user", queryset=get_user_model().objects.all()
+        source="user", queryset=get_user_model().objects.all(), write_only = True
     )
     todo = serializers.CharField(source="name")
 
     class Meta:
         model = todos_models.Todo
         fields = ["user_id", "todo", "done", "date_created"]
+
+    def to_representation(self, instance):
+        value = super().to_representation(instance)
+        value.pop('todo')
+        return {'name': instance.name, **value}
