@@ -10,8 +10,6 @@ class IsOwner(BasePermission):
 
 
 class TodoAPIViewSet(ModelViewSet):
-    queryset = todos_models.Todo.objects.all()
-    serializer_class = todos_serializers.TodoSerializer
     permission_classes = [IsAuthenticated, IsOwner]
     """
         success response for create/update/get
