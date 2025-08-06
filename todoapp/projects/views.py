@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from rest_framework import status
 from projects import models as projects_models, serializers as projects_serializers
-
+from rest_framework.permissions import AllowAny
 
 class ProjectMemberApiViewSet(ViewSet):
     """
@@ -42,7 +42,7 @@ class ProjectMemberApiViewSet(ViewSet):
 
       there will be many other cases think of that and share on forum
     """
-
+    permission_classes = [AllowAny]
     def get_project(self):
         return projects_models.Project.objects.get(pk=self.kwargs["project_pk"])
 
