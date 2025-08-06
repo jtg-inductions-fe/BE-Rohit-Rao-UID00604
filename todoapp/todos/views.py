@@ -5,9 +5,6 @@ from todos import serializers as todos_serializers, models as todos_models
 
 
 class TodoAPIViewSet(ModelViewSet):
-    queryset = todos_models.Todo.objects.all()
-    serializer_class = todos_serializers.TodoSerializer
-
     """
         success response for create/update/get
         {
@@ -31,7 +28,7 @@ class TodoAPIViewSet(ModelViewSet):
         if self.action == "create":
             self.serializer_class = todos_serializers.TodoCreateSerializer
 
-        return super().get_serializer_class()
+        return todos_serializers.TodoSerializer
 
     def get_queryset(self):
         if self.action == "list":
@@ -41,4 +38,4 @@ class TodoAPIViewSet(ModelViewSet):
                     "-date_created"
                 )
             return todos_models.Todo.objects.none()
-        return super().get_queryset()
+        return todos_models.Todo.objects.all()
