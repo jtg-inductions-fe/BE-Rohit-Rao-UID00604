@@ -1,4 +1,3 @@
-from rest_framework import status
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
@@ -30,3 +29,8 @@ class UserLoginAPIView(ObtainAuthToken):
     """
     permission_classes = [AllowAny]
     serializer_class = users_serializers.CustomUserLoginSerializer
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        if "token" in response.data:
+            response.data = {"auth_token": response.data["token"]}
+        return response

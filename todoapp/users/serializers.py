@@ -73,18 +73,23 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = "__all__"
-        extra_kwargs = {
-            "first_name": {"required": False, "allow_blank": True},
-        }
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
+    confirm_password = serializers.CharField(write_only=True)
+
     class Meta:
         model = get_user_model()
-        fields = ["first_name", "last_name", "email", "password", "date_joined"]
+        fields = [
+            "first_name",
+            "last_name",
+            "email",
+            "password",
+            "date_joined",
+            "confirm_password",
+        ]
         extra_kwargs = {
             "password": {"write_only": True},
-            "first_name": {"required": False, "allow_blank": True},
         }
 
     def to_representation(self, instance):
@@ -92,3 +97,15 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         token, _ = Token.objects.get_or_create(user=instance)
         data["token"] = token.key
         return data
+
+    def validate(self, attrs):
+        if attrs["password"] != attrs["confirm_password"]:
+            raise serializers.ValidationError(
+                {"password": "Password and Confirm Password do not match."}
+            )
+        return attrs
+
+    def create(self, validated_data):
+        validated_data.pop("confirm_password")
+        user = get_user_model().objects.create_user(**validated_data)
+        return user
