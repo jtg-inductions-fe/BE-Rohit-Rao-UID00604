@@ -73,14 +73,11 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = "__all__"
-        extra_kwargs = {
-            "first_name": {"required": False, "allow_blank": True},
-        }
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
-    confirm_password = serializers.CharField(write_only = True)
-    
+    confirm_password = serializers.CharField(write_only=True)
+
     class Meta:
         model = get_user_model()
         fields = [
@@ -93,7 +90,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         ]
         extra_kwargs = {
             "password": {"write_only": True},
-            "first_name": {"required": False, "allow_blank": True},
         }
 
     def to_representation(self, instance):
